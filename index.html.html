@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+
+    <div class="container">
+        <nav class="sidebar glass">
+            <div class="logo">
+                <h2>
+                    <i class="fa-solid fa-store"></i> 
+                    <span id="storeNameText">Store</span> 
+                    <i class="fa-solid fa-pen edit-icon" id="editStoreNameBtn" title="Change Store Name"></i>
+                </h2>
+            </div>
+            <ul>
+                <li class="active" onclick="showSection('dashboard', this)"><i class="fa-solid fa-chart-line"></i> Dashboard</li>
+                <li onclick="showSection('inventory', this)"><i class="fa-solid fa-box"></i> Inventory</li>
+                <li onclick="showSection('sales', this)"><i class="fa-solid fa-cart-shopping"></i> Sales</li>
+                <li onclick="showSection('customers', this)"><i class="fa-solid fa-users"></i> Customers</li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            
+            <section id="dashboard" class="section active">
+                <header><h1>Dashboard Overview</h1></header>
+                <div class="cards-container">
+                    <div class="card glass">
+                        <i class="fa-solid fa-boxes-stacked icon"></i>
+                        <div class="card-info">
+                            <h3>Total Products</h3>
+                            <p id="total-products">0</p>
+                        </div>
+                    </div>
+                    <div class="card glass">
+                        <i class="fa-solid fa-indian-rupee-sign icon"></i>
+                        <div class="card-info">
+                            <h3>Stock Value</h3>
+                            <p>₹<span id="stock-value">0</span></p>
+                        </div>
+                    </div>
+                    <div class="card glass">
+                        <i class="fa-solid fa-users icon"></i>
+                        <div class="card-info">
+                            <h3>Total Customers</h3>
+                            <p id="total-customers">0</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="inventory" class="section">
+                <header><h1>Inventory Management</h1></header>
+                <div class="form-container glass">
+                    <h3>Add New Item</h3>
+                    <form id="addItemForm">
+                        <input type="file" id="itemImage" accept="image/*" class="file-input" title="Keep images under 500KB">
+                        <input type="text" id="itemName" placeholder="e.g. Samsung Galaxy S24, iPhone 15" required>
+                        <input type="text" id="itemCategory" placeholder="Category (e.g. Mobile, Accessories)" required>
+                        <input type="number" id="itemPrice" placeholder="Price (₹)" required min="0">
+                        <input type="number" id="itemStock" placeholder="Quantity" required min="1">
+                        <button type="submit" class="btn-primary">Add Product</button>
+                    </form>
+                </div>
+                <div class="table-container glass">
+                    <h3>Current Stock</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="sales" class="section">
+                <header><h1>Sales Recorder</h1></header>
+                <div class="form-container glass">
+                    <h3>Record New Sale</h3>
+                    <form id="sellItemForm">
+                        <select id="saleCustomerSelect" required>
+                            <option value="" class="dark-option">Select Customer</option>
+                        </select>
+                        <select id="saleProductSelect" required>
+                            <option value="" class="dark-option">Select Product</option>
+                        </select>
+                        <input type="number" id="saleQuantity" placeholder="Quantity" min="1" required>
+                        <select id="salePaymentMethod" required>
+                            <option value="" class="dark-option">Payment Method</option>
+                            <option value="Cash" class="dark-option">Cash</option>
+                            <option value="UPI" class="dark-option">UPI / QR</option>
+                            <option value="Card" class="dark-option">Credit/Debit Card</option>
+                            <option value="Pay Later" class="dark-option">Pay Later</option>
+                        </select>
+                        <button type="submit" class="btn-success">Confirm Sale</button>
+                    </form>
+                </div>
+                <div class="table-container glass">
+                    <h3>Sales History</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Product</th>
+                                <th>Qty</th>
+                                <th>Payment</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="salesTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="customers" class="section">
+                <header><h1>Customer Directory</h1></header>
+                <div class="form-container glass">
+                    <h3>Add New Customer</h3>
+                    <form id="addCustomerForm">
+                        <input type="text" id="custName" placeholder="Full Name" required>
+                        <input type="tel" id="custPhone" placeholder="Phone Number" required>
+                        <input type="email" id="custEmail" placeholder="Email Address">
+                        <input type="text" id="custCity" placeholder="City" required>
+                        <button type="submit" class="btn-primary">Add Customer</button>
+                    </form>
+                </div>
+                <div class="table-container glass">
+                    <h3>Customer List</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>City</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customersTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
