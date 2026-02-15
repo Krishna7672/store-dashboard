@@ -149,10 +149,86 @@ tbody tr:hover { background: rgba(255, 255, 255, 0.06); transform: scale(1.01); 
     100% { box-shadow: 0 0 0 0 rgba(239, 83, 80, 0); } 
 }
 
+/* --- ADVANCED RESPONSIVE DESIGN --- */
+
+/* For Tablets (Screens smaller than 1024px) */
+@media (max-width: 1024px) {
+    :root {
+        --sidebar-width: 200px;
+    }
+    .card-info p { font-size: 24px; }
+}
+
+/* For Mobile Phones (Screens smaller than 768px) */
 @media (max-width: 768px) {
-    .sidebar { width: 80px; margin: 0; height: 100vh; border-radius: 0; }
-    .sidebar .logo h2 span, .sidebar .logo h2 .edit-icon, .sidebar ul li span { display: none; }
-    .sidebar ul li { text-align: center; padding: 15px 0; }
-    .sidebar ul li i { margin: 0; font-size: 22px; }
-    .main-content { margin-left: 80px; width: calc(100% - 80px); padding: 15px; }
+    .container {
+        flex-direction: column; /* Stack sidebar on top of content */
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        margin: 0;
+        border-radius: 0;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px;
+    }
+
+    .sidebar .logo { display: none; } /* Hide logo to save space */
+    
+    .sidebar ul {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    .sidebar ul li {
+        margin-bottom: 0;
+        padding: 10px;
+        font-size: 12px;
+        text-align: center;
+        flex: 1;
+    }
+
+    .sidebar ul li i {
+        margin-right: 0;
+        display: block;
+        font-size: 18px;
+        margin-bottom: 4px;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 15px;
+    }
+
+    /* Make cards stack in 1 column */
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+
+    /* Important: Make tables scrollable on small screens */
+    .table-container {
+        padding: 10px;
+        margin-top: 10px;
+    }
+    
+    table {
+        display: block;
+        overflow-x: auto; /* Allows swiping left/right on the table */
+        white-space: nowrap;
+    }
+
+    /* Make forms easier to tap */
+    form {
+        grid-template-columns: 1fr;
+    }
+    
+    input, select, button {
+        width: 100%;
+        font-size: 16px; /* Prevents iOS from auto-zooming on focus */
+    }
 }
