@@ -27,6 +27,12 @@
                 <li onclick="showSection('inventory', this)"><i class="fa-solid fa-box"></i> Inventory</li>
                 <li onclick="showSection('sales', this)"><i class="fa-solid fa-cart-shopping"></i> Sales</li>
                 <li onclick="showSection('customers', this)"><i class="fa-solid fa-users"></i> Customers</li>
+                
+                <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0; width: 100%;">
+                <li onclick="document.getElementById('importExcel').click()"><i class="fa-solid fa-file-import"></i> Import Excel</li>
+                <li onclick="exportToExcel()"><i class="fa-solid fa-file-export"></i> Export Excel</li>
+                
+                <input type="file" id="importExcel" accept=".xlsx, .xls" style="display: none;">
             </ul>
         </nav>
 
@@ -162,7 +168,7 @@
         </main>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="script.js"></script>
 </body>
-
 </html>
