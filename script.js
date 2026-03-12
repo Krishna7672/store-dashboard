@@ -14,6 +14,15 @@ document.addEventListener('DOMContentLoaded', () => {
     renderSales();
     renderCustomers();
     updateSalesDropdowns();
+
+    // NEW: Auto-download Excel on Refresh
+    const navEntries = performance.getEntriesByType("navigation");
+    if (navEntries.length > 0 && navEntries[0].type === "reload") {
+        setTimeout(() => {
+            console.log("Page refreshed: Auto-downloading Excel backup...");
+            exportToExcel();
+        }, 1000);
+    }
 });
 
 // --- EDIT STORE NAME ---
@@ -234,3 +243,62 @@ function saveData() {
         alert("CRITICAL ERROR: Your browser's local storage is completely full! You need to delete some items or use smaller pictures before you can save anything else.");
     }
 }
+
+// --- EXCEL IMPORT / EXPORT ---
+
+// Export Data to Excel
+function exportToExcel() {
+    // 1. Create a new workbook
+    const wb = XLSX.utils.book_new();
+
+    // 2. Convert your JSON arrays into Excel worksheets
+    const wsInventory = XLSX.utils.json_to_sheet(inventory);
+    const wsSales = XLSX.utils.json_to_sheet(sales);
+    const wsCustomers = XLSX.utils.json_to_sheet(customers);
+
+    // 3. Append the worksheets to the workbook
+    XLSX.utils.book_append_sheet(wb, wsInventory, "Inventory");
+    XLSX.utils.book_append_sheet(wb, wsSales, "Sales");
+    XLSX.utils.book_append_sheet(wb, wsCustomers, "Customers");
+
+    // 4. Trigger the download
+    const fileName = `${storeName.replace(/\s+/g, '_')}_Backup_${new Date().toISOString().split('T')[0]}.xlsx`;
+    XLSX.writeFile(wb, fileName);
+}
+
+// Import Data from Excel
+document.getElementById('importExcel').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const data = new Uint8Array(event.target.result);
+        const workbook = XLSX.read(data, {type: 'array'});
+
+        // Replace local arrays if the sheets exist in the uploaded file
+        if (workbook.Sheets["Inventory"]) {
+            inventory = XLSX.utils.sheet_to_json(workbook.Sheets["Inventory"]);
+        }
+        if (workbook.Sheets["Sales"]) {
+            sales = XLSX.utils.sheet_to_json(workbook.Sheets["Sales"]);
+        }
+        if (workbook.Sheets["Customers"]) {
+            customers = XLSX.utils.sheet_to_json(workbook.Sheets["Customers"]);
+        }
+
+        // Save to local storage and refresh the UI
+        saveData();
+        renderInventory();
+        renderSales();
+        renderCustomers();
+        updateDashboard();
+        updateSalesDropdowns();
+        
+        alert("Excel data successfully imported!");
+        
+        // Reset the file input so you can import the same file again if needed
+        e.target.value = ""; 
+    };
+    reader.readAsArrayBuffer(file);
+});
